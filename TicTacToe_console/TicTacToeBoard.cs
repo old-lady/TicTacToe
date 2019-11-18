@@ -26,6 +26,7 @@ namespace TicTacToe_console
 
         public bool AddPiece(Piece newPiece)
         {
+
             if (gameOver == true) return false;
             if (!freeSpots.Contains(newPiece.Position))
             {
@@ -58,26 +59,34 @@ namespace TicTacToe_console
         }
         public bool Update()
         {
+            // checks if game is already over
+            if (GameOverCheck(this) == true || gameOver == true)
+            {
+                gameOver = true;
+                Console.WriteLine("And the winner is....." + winner);
+                return false;
+            }
+            // puts each piece on the board as an int
             foreach (var item in piecesOnBoard)
             {
                 board[item.Position.i, item.Position.j] = (int)(item.PieceType);
             }
+            // updates free sports
             GetFreeSports();
-            if(GameOver(this)== true)
-            {
-                gameOver = true;
-                Console.WriteLine("And the winner is....." + winner);
-                return true;
-            }
-            return false;
+            return true;
         }
         public bool IsBoardFilled()
         {
             if (freeSpots.Count == 0) return true;
             else return false;
         }
-        public bool GameOver(TicTacToeBoard board)
+        public bool GameOverCheck(TicTacToeBoard board)
         {
+            if (freeSpots.Count <= 0)
+            {
+                winner = 0;
+                return true;
+            }
             // checks if game is over and sets winner
             List<int[]> allPosibilities = new List<int[]>();
 
@@ -97,38 +106,67 @@ namespace TicTacToe_console
             allPosibilities.Add(column02);
             allPosibilities.Add(column03);
 
+            //rows
             for (int i = 0; i < 3; i++)
             {
+                    //columns
                 for (int j = 0; j < 3; j++)
                 {
-                    
-                    switch (j)
-                    {
-                        case 0:
-                            column01[j] = board.board[i, j];
-                            break;
-                        case 1:
-                            column02[j] = board.board[i, j];
-                            break;
-                        case 2:
-                            column03[j] = board.board[i, j];
-                            break;
-                        default:
-                            break;
-                    }
                     switch (i)
                     {
                         case 0:
                             row01[j] = board.board[i, j];
-                            if(j == 2) cross02.Add(board.board[i, j]);
+                            if (j == 2) cross02.Add(board.board[i, j]);
+                            switch (j)
+                            {
+                                case 0:
+                                    column01[0] = board.board[i, j];
+                                    break;
+                                case 1:
+                                    column02[0] = board.board[i, j];
+                                    break;
+                                case 2:
+                                    column03[0] = board.board[i, j];
+                                    break;
+                                default:
+                                    break;
+                            }
                             break;
                         case 1:
                             row02[j] = board.board[i, j];
                             if (j == 1) cross02.Add(board.board[i, j]);
+                            switch (j)
+                            {
+                                case 0:
+                                    column01[1] = board.board[i, j];
+                                    break;
+                                case 1:
+                                    column02[1] = board.board[i, j];
+                                    break;
+                                case 2:
+                                    column03[1] = board.board[i, j];
+                                    break;
+                                default:
+                                    break;
+                            }
                             break;
                         case 2:
                             row03[j] = board.board[i, j];
                             if (j == 0) cross02.Add(board.board[i, j]);
+                            switch (j)
+                            {
+                                case 0:
+                                    column01[2] = board.board[i, j];
+                                    break;
+                                case 1:
+                                    column02[2] = board.board[i, j];
+                                    break;
+                                case 2:
+                                    column03[2] = board.board[i, j];
+                                    break;
+                                default:
+                                    break;
+                            }
                             break;
                         default:
                             break;
@@ -138,6 +176,7 @@ namespace TicTacToe_console
             }
             allPosibilities.Add(cross01.ToArray());
             allPosibilities.Add(cross02.ToArray());
+
             foreach (var item in allPosibilities)
             {
                 if (item.ToList().Contains(0))
@@ -147,7 +186,7 @@ namespace TicTacToe_console
                 if (item.ToList().Distinct().ToList().Count == 1)
                 {
                     winner = item[0];
-                    return true;   
+                    return true;
                 }
             }
             return false;

@@ -9,9 +9,9 @@ namespace TicTacToe_console
     class Player
     {
         protected static List<Player> activePlayers = new List<Player>();
-        private string playerName;
-        private int CrossOrCircle;
-        private string color;
+        protected string playerName;
+        protected int CrossOrCircle;
+        protected string color;
 
         // public getter, so everyone can see the list
         // but protected field, so that player and classes that derive from it can change the list
@@ -36,7 +36,7 @@ namespace TicTacToe_console
         }
 
 
-        public void TakeTurn(TicTacToeBoard board, (int, int) spot)
+        public virtual void TakeTurn(TicTacToeBoard board, (int, int) spot)
         {
             Piece piece = new Piece(CrossOrCircle, spot);
             board.AddPiece(piece);
