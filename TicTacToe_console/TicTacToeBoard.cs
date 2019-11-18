@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TicTacToe_console
 {
@@ -7,9 +11,12 @@ namespace TicTacToe_console
         private int[,] board;
         private List<Piece> piecesOnBoard = new List<Piece>();
         private List<(int, int)> freeSpots = new List<(int, int)>();
+        private bool gameOver = false;
+        private int winner = 0;
 
-        public int[,] Board { get => board; set => board = value; }
+        public int[,] Board { get => board; }
         public List<(int, int)> FreeSpots { get => freeSpots; }
+        public int Winner { get => winner; }
 
         public TicTacToeBoard(int size = 3)
         {
@@ -19,9 +26,10 @@ namespace TicTacToe_console
 
         public bool AddPiece(Piece newPiece)
         {
+            if (gameOver == true) return false;
             if (!freeSpots.Contains(newPiece.Position))
             {
-                System.Console.WriteLine("This spot is taken");
+                Console.WriteLine("This spot is taken");
                 return false;
 
             }
@@ -29,7 +37,7 @@ namespace TicTacToe_console
             {
                 piecesOnBoard.Add(newPiece);
                 Update();
-                System.Console.WriteLine("Piece placed");
+                //Console.WriteLine("Piece placed");
                 return true;
             }
         }
@@ -48,20 +56,101 @@ namespace TicTacToe_console
                 }
             }
         }
-        public void Update()
+        public bool Update()
         {
             foreach (var item in piecesOnBoard)
             {
                 board[item.Position.i, item.Position.j] = (int)(item.PieceType);
             }
             GetFreeSports();
-            
+            if(GameOver(this)== true)
+            {
+                gameOver = true;
+                Console.WriteLine("And the winner is....." + winner);
+                return true;
+            }
+            return false;
         }
         public bool IsBoardFilled()
         {
             if (freeSpots.Count == 0) return true;
             else return false;
         }
-    }       
-}           
-            
+        public bool GameOver(TicTacToeBoard board)
+        {
+            // checks if game is over and sets winner
+            List<int[]> allPosibilities = new List<int[]>();
+
+            // checking winning conditions
+            int[] row01 = new int[3];
+            int[] row02 = new int[3];
+            int[] row03 = new int[3];
+            int[] column01 = new int[3];
+            int[] column02 = new int[3];
+            int[] column03 = new int[3];
+            List<int> cross01 = new List<int>();
+            List<int> cross02 = new List<int>();
+            allPosibilities.Add(row01);
+            allPosibilities.Add(row02);
+            allPosibilities.Add(row03);
+            allPosibilities.Add(column01);
+            allPosibilities.Add(column02);
+            allPosibilities.Add(column03);
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    
+                    switch (j)
+                    {
+                        case 0:
+                            column01[j] = board.board[i, j];
+                            break;
+                        case 1:
+                            column02[j] = board.board[i, j];
+                            break;
+                        case 2:
+                            column03[j] = board.board[i, j];
+                            break;
+                        default:
+                            break;
+                    }
+                    switch (i)
+                    {
+                        case 0:
+                            row01[j] = board.board[i, j];
+                            if(j == 2) cross02.Add(board.board[i, j]);
+                            break;
+                        case 1:
+                            row02[j] = board.board[i, j];
+                            if (j == 1) cross02.Add(board.board[i, j]);
+                            break;
+                        case 2:
+                            row03[j] = board.board[i, j];
+                            if (j == 0) cross02.Add(board.board[i, j]);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (i == j) cross01.Add(board.board[i, j]);
+                }
+            }
+            allPosibilities.Add(cross01.ToArray());
+            allPosibilities.Add(cross02.ToArray());
+            foreach (var item in allPosibilities)
+            {
+                if (item.ToList().Contains(0))
+                {
+                    continue;
+                }
+                if (item.ToList().Distinct().ToList().Count == 1)
+                {
+                    winner = item[0];
+                    return true;   
+                }
+            }
+            return false;
+        }
+    }
+}

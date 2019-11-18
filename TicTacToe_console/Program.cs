@@ -30,15 +30,24 @@ namespace TicTacToe_console
             UI.PrintBoard(board.Board);
 
 
-            Player player01 = new Player("Julia", false);
-            Console.WriteLine(player01);
+
+            Player player01 = new Player("Julia", true);
+            Player player02 = new Player("Other Julia", false);
+            //Console.WriteLine(player01);
 
             while (true)
             {
+                int userChoice;
                 UI.PrintFreeSpots(board);
-                int userChoice = UI.InputChoise("Pick a spot", board);
+
+                userChoice = UI.InputChoise("Pick a spot, player 1", board);
                 player01.TakeTurn(board, board.FreeSpots[userChoice - 1]);
                 UI.PrintBoard(board.Board);
+
+                userChoice = UI.InputChoise("Pick a spot, player 2", board);
+                player02.TakeTurn(board, board.FreeSpots[userChoice - 1]);
+                UI.PrintBoard(board.Board);
+                board.GameOver(board);
 
             }
 
