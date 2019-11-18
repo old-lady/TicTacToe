@@ -54,6 +54,14 @@ namespace TicTacToe_console
             {
                 board[item.Position.i, item.Position.j] = (int)(item.PieceType);
             }
+            GetFreeSports();
+            
         }
-    }
-}
+        public bool IsBoardFilled()
+        {
+            if (freeSpots.Count == 0) return true;
+            else return false;
+        }
+    }       
+}           
+            

@@ -46,6 +46,7 @@
     <Compile Include="AI.cs" />
     <Compile Include="AIPlayer.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="TestClass.cs" />
     <Compile Include="TicTacToeBoard.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Cross.cs" />
@@ -56,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

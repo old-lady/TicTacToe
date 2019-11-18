@@ -8,6 +8,8 @@ namespace TicTacToe_console
 {
     class Program
     {
+
+
         static void Main(string[] args)
         {
             Testing();
@@ -20,7 +22,6 @@ namespace TicTacToe_console
             while (true)
             {
                 UI.PrintBoard(board.Board);
-
             }
         }
         private static void Testing()
@@ -32,10 +33,14 @@ namespace TicTacToe_console
             Player player01 = new Player("Julia", false);
             Console.WriteLine(player01);
 
-            UI.PrintFreeSpots(board);
-            int userChoice = UI.InputChoise("Pick a spot", board);
-            player01.TakeTurn(board, board.FreeSpots[userChoice - 1]);
-            UI.PrintBoard(board.Board);
+            while (true)
+            {
+                UI.PrintFreeSpots(board);
+                int userChoice = UI.InputChoise("Pick a spot", board);
+                player01.TakeTurn(board, board.FreeSpots[userChoice - 1]);
+                UI.PrintBoard(board.Board);
+
+            }
 
         }
     }
